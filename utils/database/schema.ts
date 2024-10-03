@@ -44,3 +44,13 @@ export const CollectedWaste = pgTable('collected_waste', {
     collectionDate : timestamp('collection_date').notNull(),
     status : varchar('status', {length:255}).notNull().default('collected')
 })
+
+//notification table
+export const notifications = pgTable('notification', {
+    id : serial('id').primaryKey(),
+    userId : integer('user_id').references(() => Users.id).notNull(),
+    message : text('message').notNull(),
+    type : varchar('type', {length: 50}).notNull(),
+    isRead : boolean('is_read').notNull().default(false),
+    createdAt : timestamp('created_at').defaultNow().notNull()
+})
