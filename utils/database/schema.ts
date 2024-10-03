@@ -35,3 +35,12 @@ export const Rewards = pgTable('rewards' , {
     name : varchar('name', {length:255}).notNull(),
     collectionInfo : text('collection_info').notNull()
 })
+
+//collected waste table
+export const CollectedWaste = pgTable('collected_waste', {
+    id : serial('id').primaryKey(),
+    reportId : integer('report_id'). references(() => Reports.id).notNull(),
+    colletorId : integer('collector_id').references(() => Users.id).notNull(),
+    collectionDate : timestamp('collection_date').notNull(),
+    status : varchar('status', {length:255}).notNull().default('collected')
+})
