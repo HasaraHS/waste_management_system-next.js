@@ -46,7 +46,7 @@ export const CollectedWastes = pgTable('collected_waste', {
 })
 
 //notification table
-export const notifications = pgTable('notification', {
+export const Notifications = pgTable('notification', {
     id : serial('id').primaryKey(),
     userId : integer('user_id').references(() => Users.id).notNull(),
     message : text('message').notNull(),
