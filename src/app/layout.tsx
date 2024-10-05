@@ -12,9 +12,9 @@ import Sidebar from '@/components/Sidebar';
 
 const inter = Inter ({subsets : ['latin']})    //initialized inter font
 export default function RootLayout ({
-children
+children,
 } : {
-  children : React.ReactNode
+  children : React.ReactNode;
 }) {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const [totalEarnings, setTotalEarnings] = useState(0)
