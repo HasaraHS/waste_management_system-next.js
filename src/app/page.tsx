@@ -80,6 +80,11 @@ export default function Home() {
           />
         </div>
       </section>
+
+      <section className="bg-white p-10 rounded-3xl shadow-lg mb-20">
+        <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">Our Contribution</h2>
+        <div className="grid md:grid-cols-4 gap-6"></div>
+      </section>
     </div>
   );
 }
@@ -95,4 +100,12 @@ function FeatureCard({icon:Icon, title, description}:{icon: React.ElementType; t
     <p className="text-gray-600 leading-relaxed">{description}</p>
   </div>
  )
+}
+
+//create function to contibution cards
+function impactCard ({title,value, icon:Icon}: {title:string; value:string | number;icon: React.ElementType}) {
+return (
+  <div className="p-6 rounded-xl bg-gray-50 border border-gray-100 transition-all
+  duration -300 ease-in-out hover:shadow-md" ></div>
+)
 }
