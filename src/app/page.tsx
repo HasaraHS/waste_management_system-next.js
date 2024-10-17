@@ -17,8 +17,8 @@ function AnimatedGlobe() {
 
 export default function Home() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <section className="text-center mb-20 pl-16">
+    <div className="container mx-auto px-4 py-8 ">
+      <section className="text-center mb-20 pl-16 ml-32">
         <AnimatedGlobe />
         <h1 className=" font-bold mb-6 text-gray-800 tracking-tight">
           <span className="text-green-700 text-5xl">Green City Concept</span>
@@ -53,7 +53,7 @@ export default function Home() {
         </Button>
       </section>
 
-      <section className="grid md:grid-cols-3 gap-10 mb-20 ">
+      <section className="grid md:grid-cols-3 gap-10 mb-20 ml-64">
         <FeatureCard
           icon={Trees}
           title="Eco-Friendly"
@@ -81,9 +81,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white p-10 rounded-3xl shadow-lg mb-20">
+      <section className="bg-gray-100 p-10 rounded-3xl shadow-lg mb-10 ml-64">
         <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">Our Contribution</h2>
-        <div className="grid md:grid-cols-4 gap-6"></div>
+        <div className="grid md:grid-cols-4 gap-6">
+          <ImpactCard title = "collected waste" value={"1 ton"} icon={Recycle} />
+          <ImpactCard title = "Submitted Reports" value={30} icon={MapPin} />
+          <ImpactCard title = "Tokens Earned" value={250} icon={HandCoins} />
+          <ImpactCard title = "CO2 Offset" value={"300 kg"} icon={Trees} />
+        </div>
       </section>
     </div>
   );
@@ -103,9 +108,13 @@ function FeatureCard({icon:Icon, title, description}:{icon: React.ElementType; t
 }
 
 //create function to contibution cards
-function impactCard ({title,value, icon:Icon}: {title:string; value:string | number;icon: React.ElementType}) {
+function ImpactCard ({title,value, icon:Icon}: {title:string; value:string | number;icon: React.ElementType}) {
 return (
-  <div className="p-6 rounded-xl bg-gray-50 border border-gray-100 transition-all
-  duration -300 ease-in-out hover:shadow-md" ></div>
+  <div className="p-6 rounded-xl bg-gray-200 border border-gray-100 transition-all
+  duration -300 ease-in-out hover:shadow-md" >
+    <Icon className="h-10 w-10 text-green-500 mb-4"></Icon>
+    <p className="text-3xl font-bold mb-2 text-gray-800">{value}</p>
+    <p className="text-sm text-gray-600">{title}</p> {" "}
+  </div>
 )
 }
