@@ -1,5 +1,6 @@
+import { use } from "react";
 import { db } from "./dbConfig";
-import {Notifications, Transactions, Users} from './schema'
+import {Notifications, Transactions, Users, Reports, Rewards} from './schema'
 import {eq, sql, and,desc} from 'drizzle-orm'
 
 export async function createUser(email:string, name:string){
@@ -77,5 +78,75 @@ export async function markNotificationAsRead(notificationId:number){
         console.error('Error marking notification as read', error)
         return null
        } 
+}
+
+//create report function
+export async function createReport(
+    userId :number,
+    location : string,
+    wasteType : string,
+    amount : string,
+    imageUrl? : string,  // optional 
+    verificationResult? : any
+){
+    try{
+       const [report] = await db.insert(Reports).values({
+        userId, location, wasteType, amount, imageUrl, verificationResult, status: 'pending',
+       }). returning().execute();
+
+       const pointsEarned = 10;
+       //update Rewards Points
+       await updateRewardPoints(userId, pointsEarned);
+       //create Transaction
+       await createTransaction(userId, 'earned_report', pointsEarned, 
+        'Points earned for reporting waste'
+        )
+       //create Notification
+       await createNotification(userId, `You've earned ${pointsEarned} points for reporting waste!`,
+        'reward'
+       );
+       return report;
+    }catch (e){
+        console.error("Error creating report", e);
+        return null;
+    }
+}
+
+//update Rewards points function
+export async function updateRewardPoints(userId:number, pointsToAdd:number){
+    try{
+        const [updateReward] = await db.update(Rewards).set({
+            points : sql `${Rewards.points} + ${pointsToAdd}`
+        }).where (eq(Rewards.userId, userId)).returning().execute();
+        return updateReward;
+    }catch(e){
+        console.error('Error updating reward points', e);
+        return null;
+    }
+}
+
+//create transaction function
+export async function createTransaction(userId:number, type:'earned_report'| 'earned_collect' | 'redeemed', amount:number, description:string){
+    try{
+        const [transaction] = await db.insert(Transactions).values({
+            userId,type,amount, description
+        }).returning().execute();
+        return transaction;
+    } catch(e){
+        console.error('Error creating transaction', e);
+        throw e;
+    }
+}
+
+//create notification function
+export async function createNotification(userId:number, message: string, type:string){
+    try{
+        const [notification] = await db.insert(Notifications).values({
+            userId, message, type
+        }).returning().execute();
+        return notification;
+    }catch(e){
+        console.error('Error creating notification', e);
+    }
 }
 

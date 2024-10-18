@@ -10,6 +10,7 @@ import {toast} from 'react-hot-toast';
 import { resolve } from "path";
 import { rejects } from "assert";
 import { readFile } from "fs";
+import { createReport } from "../../../utils/database/action";
 
 const geminiApiKey = process.env.GEMINI_API_KEY as any;
 const googleMapsApikey = process.env.GOOGLE_MAPS_API_KEY as any;
@@ -17,7 +18,7 @@ const googleMapsApikey = process.env.GOOGLE_MAPS_API_KEY as any;
 const libraries : Libraries = ['places']
 
 export default function ReportPage() {
-    const [user, setUser] = useState ('')
+    const [user, setUser] = useState ('') as any
     const router = useRouter();
 
     const [reports, setReports] = useState<Array< {
@@ -163,5 +164,17 @@ export default function ReportPage() {
         }
 
         setIsSubmitting(true);
+        try{
+            const report = await createReport(user.id, newReport.location
+                ,newReport.type, newReport.amount, preview || undefined, 
+                verificationResult ? JSON.stringify(verificationResult) : undefined
+            ) as any;
+
+            const formattedReport = {
+                
+            }
+        }catch(e) {
+
+        }
     }
 }
