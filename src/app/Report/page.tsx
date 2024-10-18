@@ -1,5 +1,5 @@
 'use client'
-import { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {MapPin, Upload, CheckCircle, Loader} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -126,9 +126,42 @@ export default function ReportPage() {
                 "confidence" : confidence level as a number between 0 and 1
            }`;
 
-           
+           const result = await model.generateContent([prompt, ...imageParts])
+           const responce = await result.response;
+           const text = responce.text();
+
+           try {
+            const parseResult = JSON.parse(text);
+            if(parseResult.wasteType && parseResult.quantity && parseResult.confidence){
+                setVerificationResults(parseResult)
+                setVerificationStatus('sucess')
+                setNewReport({
+                    ...newReport,
+                    type : parseResult.wasteType,
+                    amount : parseResult.quantity
+                });
+            } else {
+                console.error('Invalied verification results', parseResult);
+                setVerificationStatus('failure');
+            }
+           } catch (e){
+            console.error('Failed to parse JSON respones', e);
+            setVerificationStatus('failure');
+           }
+
         }catch (e) {
-          
+            console.error('Error verifying waste', e);
+            setVerificationStatus('failure');
         }
+    };
+
+    const handleSubmit = async(e:React.FormEvent) => {
+        e.preventDefault();
+        if(verificationStatus !== 'sucess' || !user){
+            toast.error('Please verify the waste before submitting or log in');
+            return
+        }
+
+        setIsSubmitting(true);
     }
 }
