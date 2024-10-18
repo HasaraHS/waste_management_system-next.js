@@ -171,10 +171,31 @@ export default function ReportPage() {
             ) as any;
 
             const formattedReport = {
-                
-            }
-        }catch(e) {
+                id: report.id,
+                location : report.location,
+                wasteType : report.wasteType,
+                amount : report.amount,
+                createdAt: report.createdAt.toISOString().split("T")[0],
+            };
 
+            setReports([formattedReport, ...reports])
+            setNewReport({location: "" , type : "", amount : ""});
+            setFile(null);
+            setPreview(null);
+            setVerificationStatus('idle');
+            setVerificationResults(null);
+
+            toast.success(`Report sumbitted successfully' you've earned points for reporting waste`);
+        }catch(e) {
+            console.error('Error submitting report', e);
+            toast.error('Failed to submit report. Please try again');
+        } finally{
+            setIsSubmitting(false);
         }
-    }
+    };
+
+    //check user authentication and fetch reasent reports
+    useEffect (() => {
+        
+    })
 }
