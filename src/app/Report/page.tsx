@@ -202,8 +202,17 @@ export default function ReportPage() {
                 let user = await getUserByEmail(email);
                 setUser(user);
 
-                const recentReports = await getRecentReport()
+                const recentReports = await getRecentReport() as any
+                const formattedReport = recentReports.map( (report : any) => ({
+                    ...report,
+                    createdAt: report.createdAt.toISOString().split("T")[0]
+                }));
+                setReports(formattedReport);
+            } else {
+                router.push("/");
             }
-        }
-    })
+        };
+
+        checkUser();
+    }, [router]);
 }
