@@ -10,7 +10,7 @@ import {toast} from 'react-hot-toast';
 import { resolve } from "path";
 import { rejects } from "assert";
 import { readFile } from "fs";
-import { createReport } from "../../../utils/database/action";
+import { createReport, getRecentReport, getUserByEmail } from "../../../utils/database/action";
 
 const geminiApiKey = process.env.GEMINI_API_KEY as any;
 const googleMapsApikey = process.env.GOOGLE_MAPS_API_KEY as any;
@@ -194,8 +194,16 @@ export default function ReportPage() {
         }
     };
 
-    //check user authentication and fetch reasent reports
+    //check user authentication and fetch recent reports
     useEffect (() => {
-        
+        const checkUser = async() => {
+            const email = localStorage.getItem("userEmail");
+            if(email){
+                let user = await getUserByEmail(email);
+                setUser(user);
+
+                const recentReports = await getRecentReport()
+            }
+        }
     })
 }

@@ -150,3 +150,13 @@ export async function createNotification(userId:number, message: string, type:st
     }
 }
 
+export async function getRecentReport(limit : number =10) {
+    try{
+        const reports = await db.select().from(Reports).orderBy(desc(Reports.createdAt))
+        .limit(limit).execute();
+    }catch(e){
+        console.error('Error fetching recent reports', e);
+        return [];
+    }
+}
+
