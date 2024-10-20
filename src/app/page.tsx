@@ -53,7 +53,7 @@ export default function Home() {
         </Button>
       </section>
 
-      <section className="grid md:grid-cols-3 gap-10 mb-20 ml-64">
+      <section className="grid md:grid-cols-2 gap-20 mb-20 ml-64" >
         <FeatureCard
           icon={Trees}
           title="Eco-Friendly"
@@ -99,10 +99,10 @@ function FeatureCard({icon:Icon, title, description}:{icon: React.ElementType; t
  return (
   <div className="bg-gray-200 p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out flex flex-col items-center text-center">
     <div className="bg-green-100 p-4 rounded-full m-6">
-      <Icon className="h-8 w-8 text-green-700"/>
+      <Icon className="h-10 w-10 text-green-700"/>
     </div>
     <h3 className="text-xl font-semibold mb-4 text-gray-800">{title}</h3>
-    <p className="text-gray-600 leading-relaxed">{description}</p>
+    <p className="text-gray-600 leading-relaxed" style={{ textAlign: "justify" }}>{description}</p>
   </div>
  )
 }
