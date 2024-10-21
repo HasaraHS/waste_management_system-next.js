@@ -362,7 +362,7 @@ export default function ReportPage() {
               />
             </div>
             <div>
-            <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">Estimated Amount</label>
+            <label htmlFor="amount" className="block text-m font-medium text-gray-700 mb-1">Estimated Amount</label>
             <input
               type="text"
               id="amount"
@@ -376,6 +376,7 @@ export default function ReportPage() {
             />
           </div>
           </div> 
+          
         </form>
       </div>
     );
