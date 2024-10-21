@@ -376,8 +376,47 @@ export default function ReportPage() {
             />
           </div>
           </div> 
-          
+          <Button 
+          type="submit" 
+          className="w-full bg-green-500 hover:bg-green-600 text-white py-3 text-lg rounded-xl transition-colors duration-300 flex items-center justify-center"
+          disabled={isSubmitting} >
+          {isSubmitting ? (
+            <>
+              <Loader className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
+              Submitting...
+            </>
+          ) : 'Submit Report'}
+        </Button>
         </form>
+
+        <h2 className="text-3xl font-semibold mb-6 text-gray-800 ml-32">Recent Reports</h2>
+        <div className="bg-white rounded-2xl  shadow-lg overflow-hidden ml-32">
+          <div className="max-h-96 overflow-y-auto ">
+            <table className="w-full">
+                 <thead>
+                    <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    </tr>
+                 </thead>
+                 <tbody className="divide-y divide-gray-200">
+                         {reports.map ((report)=> (
+                            <tr  key={report.id} className="hover:bg-gray-50 transition-colors duration-200">
+                                <td className="px-6 py-4 whitespace-nowrap text-m text-gray-500">
+                                    <MapPin className="inline-block w-4 h-4 mr-2 text-green-500"/>
+                                    {report.location}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{report.wasteType}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{report.amount}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{report.createdAt}</td>
+                            </tr>
+                         ))}
+                 </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     );
 }
