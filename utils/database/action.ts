@@ -3,15 +3,25 @@ import { db } from "./dbConfig";
 import {Notifications, Transactions, Users, Reports, Rewards} from './schema'
 import {eq, sql, and,desc} from 'drizzle-orm'
 
-export async function createUser(email:string, name:string){
-    try{
-        const [user] = await db.insert(Users).values({email, name}).returning().execute();
-        return user;
-    }catch(error){
-        console.error('Error creating user', error)
-        return null;
+// Function to create a new user or return existing user
+export async function createUser(email: string, name: string) {
+    try {
+      // Check if the user already exists by email
+      const existingUser = await getUserByEmail(email);
+      if (existingUser) {
+        console.log('User already exists:', existingUser);
+        return existingUser; // Return existing user if found
+      }
+  
+      // If user doesn't exist, create a new one
+      const [user] = await db.insert(Users).values({ email, name }).returning().execute();
+      return user;
+    } catch (error) {
+      console.error('Error creating user', error);
+      return null;
     }
-}
+  }
+  
 
 //function getUserByEmail
 export async function getUserByEmail(email:string){

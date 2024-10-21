@@ -163,6 +163,7 @@ export default function Header({onMenuClick, totalEarnings} : HeaderProps){
     const getUserInfo = async () => {
         if(web3Auth.connected) {
             const user = await web3Auth.getUserInfo()   
+            console.log('User Info:', user);
             setUserInfo(user);
 
             if(user.email) {
@@ -263,7 +264,7 @@ export default function Header({onMenuClick, totalEarnings} : HeaderProps){
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuItem onClick={getUserInfo}>
-                                    {userInfo ? userInfo.name : 'Profile'}
+                                    {userInfo ? (userInfo.name || userInfo.email) : 'Profile'}
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
                                     <Link href={'/settings'}> Settings</Link>

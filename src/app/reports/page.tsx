@@ -104,7 +104,7 @@ export default function ReportPage() {
         setVerificationStatus('verifying');
         try {
            const genAI = new GoogleGenerativeAI(geminiApiKey);
-           const model = genAI.getGenerativeModel({model:'gemni-1.5-flash'})
+           const model = genAI.getGenerativeModel({model:'gemini-1.5-flash'})
            const base64Data = await readFileAsBase64 (file);
            const imageParts = [
             {
@@ -194,30 +194,31 @@ export default function ReportPage() {
         }
     };
 
-    //check user authentication and fetch recent reports
-    useEffect (() => {
-        const checkUser = async() => {
-            const email = localStorage.getItem("userEmail");
-            if(email){
-                let user = await getUserByEmail(email);
-                setUser(user);
-
-                const recentReports = await getRecentReport() as any
-                const formattedReport = recentReports.map( (report : any) => ({
+    const checkUser = async () => {
+        const email = localStorage.getItem("userEmail");
+        if (email) {
+            let user = await getUserByEmail(email);
+            setUser(user);
+    
+            try {
+                const recentReports = await getRecentReport() || []; // Fallback to empty array if null/undefined
+                const formattedReports = recentReports.map((report: any) => ({
                     ...report,
-                    createdAt: report.createdAt.toISOString().split("T")[0]
+                    createdAt: report.createdAt.toISOString().split("T")[0],
                 }));
-                setReports(formattedReport);
-            } else {
-                router.push("/");
+                setReports(formattedReports);
+            } catch (error) {
+                console.error('Error fetching recent reports:', error);
+                setReports([]); // Set to empty array in case of error
             }
-        };
-
-        checkUser();
-    }, [router]);
+        } else {
+            router.push("/");
+        }
+    };
+    
 
     return (
-      <div className="p-8 max-w-5xl mx-auto">
+      <div className="p-8 max-w-5xl mx-auto text-gray-800">
         <h1 className="text-3xl font-semibold mb-6 text-gray-800 ml-32">
           Waste Report
         </h1>
